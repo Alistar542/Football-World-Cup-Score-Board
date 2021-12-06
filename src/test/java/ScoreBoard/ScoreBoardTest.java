@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -158,6 +159,31 @@ public class ScoreBoardTest {
 		assertEquals("Nothing to display",outputStreamCaptor.toString()
 			      .trim());
 		System.setOut(standardOut);
+	}
+	
+	/**
+	 * Test case when user tries to exit
+	 * but is prevented when there exists score to be finished
+	 * An error is shown when the user tries to attempt this
+	 */
+	@Test
+	public void doNotExitWhenScoreIsYetToBeFinished() {
+		PrintStream standardOut = System.out;
+		ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(outputStreamCaptor));
+		ScoreVO scoreVO = new ScoreVO("France", "Spain");
+		scr.exitProgram(scoreVO);
+		assertEquals("Please Finish the score before Exiting",outputStreamCaptor.toString()
+			      .trim());
+		System.setOut(standardOut);
+	}
+	
+	/**
+	 * Test case when user tries exit
+	 */
+	@Test
+	public void exitWhenNoScoresExistsToBeFinished() {
+		assertFalse(scr.exitProgram(null));
 	}
 	
 	public Collection<ScoreVO> createDataForTesting() {

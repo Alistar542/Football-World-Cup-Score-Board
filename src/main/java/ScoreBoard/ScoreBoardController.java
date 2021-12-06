@@ -22,6 +22,8 @@ import ScoreBoard.displaysummary.DisplaySummaryValidatorImpl;
 import ScoreBoard.displaysummary.DisplaySummaryValidatorInterface;
 import ScoreBoard.displaytext.DisplayTextImpl;
 import ScoreBoard.displaytext.DisplayTextInterface;
+import ScoreBoard.exitprogram.ExitProgramValidatorImpl;
+import ScoreBoard.exitprogram.ExitProgramValidatorInterface;
 import ScoreBoard.finishscore.FinishScoreImpl;
 import ScoreBoard.finishscore.FinishScoreInterface;
 import ScoreBoard.finishscore.FinishScoreValidatorImpl;
@@ -62,7 +64,7 @@ public class ScoreBoardController {
 					break;
 				}
 				case EXIT_FLAG: {
-					continueFlag = false;
+					continueFlag = exitProgram(scoreVO);
 					break;
 				}
 				default:
@@ -118,6 +120,16 @@ public class ScoreBoardController {
 			displaySummaryInterface.displaySummaryOfScores(completeScores);
 		}else {
 			System.out.println("Nothing to display");
+		}
+	}
+	
+	public boolean exitProgram(ScoreVO scoreVO) {
+		ExitProgramValidatorInterface exitPrgrmValidator = new ExitProgramValidatorImpl();
+		if(exitPrgrmValidator.validateForExiting(scoreVO)) {
+			return false;
+		}else {
+			System.out.println("Please Finish the score before Exiting");
+			return true;
 		}
 	}
 	
